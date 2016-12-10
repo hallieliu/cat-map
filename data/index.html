@@ -13,57 +13,11 @@
             font-family: Montserrat, sans-serif;
         }
         
-        .county {
-            /*
-            stroke: #fff;
-            fill: #005DAA;
-*/
-        }
-        
-        .hover {
-            fill: turquoise;
-        }
-        
-        h1,
-        h2 {
-            position: absolute;
-            left: 20px;
-            top: 10px;
-            font-size: 2em;
-            font-weight: 100;
-            color: #005DAA;
-        }
-        
-        h2 {
-            top: 60px;
-            font-size: 1.2em;
-        }
-        
         #map {
             width: 900px;
             height: 600px;
             margin: 10px auto;
             border: 1px solid #d3d3d3;
-        }
-        
-        .land {
-            fill: #d3d3d3;
-        }
-        
-        .emitter {
-            fill: yellow;
-            opacity: .8;
-        }
-        
-/*
-        .slider {
-            width: 300px;
-            margin-left: 223px;
-        }
-*/
-        
-        #emission-value {
-            margin-left: 223px;
         }
     </style>
 </head>
@@ -73,16 +27,11 @@
     <h1>Cat Map</h1>
     <h2></h2>
     <div id="map"></div>
-<!--
-    <input type="range" class="slider">
-    <div id="emissions-value"></div>
--->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-statistics/0.9.0/simple_statistics.min.js"></script>
-
+    
     <script>
         var width = 1257,
             height = 600;
@@ -101,41 +50,21 @@
 
         queue()
             .defer(d3.json, "us-counties.json")
-            .defer(d3.json, "na_land_clipped.json")
+//            .defer(d3.json, "na_land_clipped.json")
             .await(makeMap);
 
 
 
 
-        function makeMap(error, counties, na) {
+        function makeMap(error, counties) {
 
-            svg.append("g")
-                .selectAll("path")
-                .data(na.features)
-                .enter()
-                .append("path")
-                .attr("d", geoPath)
-                .attr("class", "land");
-
-            svg.append("g")
-                .selectAll("path")
-                .data(counties.features)
-                .enter()
-                .append("path")
-                .attr("d", geoPath)
-                .attr("class", "county")
-                .attr("fill", function (d) {
-                    return jenks(d.properties.uninsured);
-                })
-                .on("mouseover", function (d) {
-                    d3.select("h2").text(d.properties.NAME + ' county');
-                    d3.select(this).attr("class", "county hover");
-                })
-                .on("mouseout", function (d) {
-                    d3.select("h2").text("");
-                    d3.select(this).attr("class", "county");
-                });
-
+            svg.append('g')
+            .selectAll('path')
+            .data(counties.features)
+            .enter()
+            .append('path')
+            .attr( "d", geoPath )
+            .attr('class','county');
         }
     </script>
 </body>
